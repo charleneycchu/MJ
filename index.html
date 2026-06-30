@@ -16,10 +16,7 @@
 
     :root {
       --gold: #f0c84a;
-      --gold-dim: rgba(240,200,74,0.55);
-      --felt-dark: #0e2818;
-      --felt-mid: #163a22;
-      --felt-light: #1e5030;
+      --gold-dim: rgba(240,200,74,0.6);
       --tile-bg: linear-gradient(160deg, #fffef8 0%, #f4eed8 100%);
       --tile-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 6px 16px rgba(0,0,0,0.35),
                      inset 0 1px 0 rgba(255,255,255,0.9);
@@ -40,20 +37,21 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 52px 24px 40px;
-      padding-top: max(52px, env(safe-area-inset-top, 52px));
-      padding-bottom: max(40px, env(safe-area-inset-bottom, 40px));
+      padding-top: max(48px, env(safe-area-inset-top, 48px));
+      padding-bottom: max(36px, env(safe-area-inset-bottom, 36px));
+      padding-left: 20px;
+      padding-right: 20px;
       gap: 0;
     }
 
     .header { text-align: center; }
     .header h1 {
-      font-size: 30px; font-weight: 800;
+      font-size: 28px; font-weight: 800;
       letter-spacing: 0.25em; color: var(--gold);
       text-shadow: 0 2px 12px rgba(240,200,74,0.4);
     }
     .header p {
-      margin-top: 4px; font-size: 12px;
+      margin-top: 3px; font-size: 11px;
       letter-spacing: 0.2em; color: var(--gold-dim);
     }
 
@@ -64,8 +62,8 @@
     }
 
     .tile-card {
-      width: 200px; height: 260px;
-      transform-style: preserve-3d; position: relative;
+      width: 180px; height: 235px;
+      transform-style: preserve-3d;
     }
 
     .tile-card.animating {
@@ -104,14 +102,13 @@
     .tile-face .corner.br { bottom: 14px; right: 14px; transform: rotate(180deg); }
 
     .tile-emoji {
-      font-size: 96px; line-height: 1;
-      transition: opacity 0.15s ease;
+      font-size: 88px; line-height: 1;
       filter: drop-shadow(0 3px 6px rgba(0,0,0,0.15));
       user-select: none;
     }
 
     .tile-label {
-      font-size: 20px; font-weight: 700;
+      font-size: 19px; font-weight: 700;
       color: #251508; letter-spacing: 0.08em;
     }
 
@@ -122,19 +119,32 @@
       padding: 2px 10px; border-radius: 10px;
     }
 
+    .type-花牌 { --type-color: #c0392b; }
+    .type-萬子 { --type-color: #c0392b; }
+    .type-索子 { --type-color: #27ae60; }
+    .type-筒子 { --type-color: #2980b9; }
+    .type-字牌 { --type-color: #7d3c98; }
+
+    .tile-face.initial .tile-emoji   { opacity: 0.3; font-size: 66px; }
+    .tile-face.initial .tile-label   { color: #bba; font-size: 15px; }
+    .tile-face.initial .tile-type-badge { display: none; }
+    .tile-face.initial .corner       { display: none; }
+
     .counter-bar {
       display: flex; align-items: center; justify-content: center;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(240,200,74,0.18);
-      border-radius: 16px; padding: 12px 0;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(240,200,74,0.2);
+      border-radius: 16px; padding: 10px 0;
       width: 100%; max-width: 320px;
     }
 
     .counter-cell { flex: 1; text-align: center; }
-    .counter-cell + .counter-cell { border-left: 1px solid rgba(240,200,74,0.18); }
+    .counter-cell + .counter-cell {
+      border-left: 1px solid rgba(240,200,74,0.2);
+    }
 
     .counter-num {
-      display: block; font-size: 28px; font-weight: 800;
+      display: block; font-size: 26px; font-weight: 800;
       color: var(--gold); line-height: 1;
     }
 
@@ -143,116 +153,120 @@
       letter-spacing: 0.15em; color: var(--gold-dim); margin-top: 2px;
     }
 
-    .progress-wrap {
-      width: 100%; max-width: 320px; height: 4px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 2px; overflow: hidden;
+    .mode-badge {
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.05em;
     }
 
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #f0c84a, #e8a020);
-      border-radius: 2px; width: 0%;
-      transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    .mode-group {
+      display: flex; gap: 8px;
+      width: 100%; max-width: 320px;
     }
+
+    .mode-btn {
+      flex: 1; height: 40px;
+      border: 1.5px solid rgba(240,200,74,0.3);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      color: rgba(240,200,74,0.6);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      user-select: none; -webkit-user-select: none;
+      font-family: -apple-system, 'PingFang TC', sans-serif;
+    }
+
+    .mode-btn.active {
+      background: rgba(240,200,74,0.18);
+      border-color: var(--gold);
+      color: var(--gold);
+      box-shadow: 0 0 12px rgba(240,200,74,0.2);
+    }
+
+    .mode-btn:active { opacity: 0.75; }
 
     .button-group {
       display: flex; flex-direction: column;
-      align-items: center; gap: 12px; width: 100%;
+      align-items: center; gap: 10px; width: 100%;
     }
 
     .draw-btn {
-      width: 100%; max-width: 260px; height: 58px;
-      border: none; border-radius: 29px;
+      width: 100%; max-width: 260px; height: 56px;
+      border: none; border-radius: 28px;
       background: linear-gradient(145deg, #f0c84a 0%, #c8900a 100%);
       color: #1a0800; font-size: 20px; font-weight: 800;
       letter-spacing: 0.3em; cursor: pointer;
       box-shadow: 0 8px 24px rgba(240,160,32,0.38), 0 2px 6px rgba(0,0,0,0.3),
                   inset 0 1px 0 rgba(255,255,255,0.35);
-      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.2s ease;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
       user-select: none; -webkit-user-select: none;
+      font-family: -apple-system, 'PingFang TC', sans-serif;
     }
 
-    .draw-btn:active:not(:disabled) {
+    .draw-btn:active {
       transform: scale(0.95) translateY(2px);
       box-shadow: 0 2px 10px rgba(240,160,32,0.25);
     }
 
-    .draw-btn:disabled {
-      background: linear-gradient(145deg, #555 0%, #333 100%);
-      color: #777; box-shadow: none; cursor: default;
-    }
-
     .reset-btn {
       background: none;
-      border: 1.5px solid rgba(240,200,74,0.3);
-      color: rgba(240,200,74,0.65);
+      border: 1.5px solid rgba(240,200,74,0.35);
+      color: rgba(240,200,74,0.7);
       font-size: 13px; font-weight: 500;
-      letter-spacing: 0.12em; padding: 9px 22px;
+      letter-spacing: 0.12em; padding: 8px 22px;
       border-radius: 18px; cursor: pointer;
       transition: background 0.15s ease, color 0.15s ease;
       user-select: none; -webkit-user-select: none;
+      font-family: -apple-system, 'PingFang TC', sans-serif;
     }
 
     .reset-btn:active {
-      background: rgba(240,200,74,0.08); color: var(--gold);
+      background: rgba(240,200,74,0.1); color: var(--gold);
     }
 
     .history-wrap {
       width: 100%; max-width: 340px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(240,200,74,0.25);
-      border-radius: 16px; padding: 10px 14px 12px;
+      background: rgba(255,255,255,0.14);
+      border: 1.5px solid rgba(240,200,74,0.45);
+      border-radius: 16px;
+      padding: 10px 14px 10px;
     }
 
     .history-label {
       font-size: 11px; letter-spacing: 0.15em;
       color: var(--gold); margin-bottom: 8px; text-align: center;
+      font-weight: 600;
     }
 
     .history-scroll {
-      display: flex; gap: 8px;
+      display: flex; gap: 6px;
       overflow-x: auto; overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
-      padding: 4px 2px 4px; scrollbar-width: none;
-      min-height: 42px; align-items: center;
+      padding: 2px 2px 2px;
+      scrollbar-width: none;
+      min-height: 40px; align-items: center;
     }
     .history-scroll::-webkit-scrollbar { display: none; }
 
     .history-tile {
-      font-size: 32px; flex-shrink: 0;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-      user-select: none; cursor: default;
+      font-size: 30px; flex-shrink: 0;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+      user-select: none;
     }
 
     .history-empty {
-      font-size: 12px; color: rgba(240,200,74,0.55);
-      letter-spacing: 0.12em; text-align: center;
+      font-size: 12px; color: rgba(255,255,255,0.45);
+      letter-spacing: 0.1em; text-align: center;
       padding: 4px 0; width: 100%;
     }
-
-    .type-花牌 { --type-color: #c0392b; }
-    .type-萬子 { --type-color: #c0392b; }
-    .type-索子 { --type-color: #27ae60; }
-    .type-筒子 { --type-color: #2980b9; }
-    .type-字牌 { --type-color: #7d3c98; }
-
-    .tile-face.initial .tile-emoji   { opacity: 0.35; font-size: 72px; }
-    .tile-face.initial .tile-label   { color: #bba; font-size: 16px; }
-    .tile-face.initial .tile-type-badge { display: none; }
-    .tile-face.initial .corner       { display: none; }
-
-    .tile-face.empty .tile-emoji   { font-size: 54px; opacity: 0.3; }
-    .tile-face.empty .tile-label   { color: #aaa; font-size: 15px; }
-    .tile-face.empty .tile-type-badge { display: none; }
-    .tile-face.empty .corner       { display: none; }
   </style>
 </head>
 <body>
 
   <header class="header">
     <h1>麻將抽牌</h1>
-    <p>共 144 張牌 · 無放回抽取</p>
+    <p>有放回抽取 · 無限次數</p>
   </header>
 
   <div class="tile-stage">
@@ -267,29 +281,32 @@
     </div>
   </div>
 
-  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%">
     <div class="counter-bar">
       <div class="counter-cell">
-        <span class="counter-num" id="drawnNum">0</span>
-        <span class="counter-lbl">已抽</span>
+        <span class="counter-num" id="totalNum">0</span>
+        <span class="counter-lbl">已抽次數</span>
       </div>
       <div class="counter-cell">
-        <span class="counter-num" id="remainNum">144</span>
-        <span class="counter-lbl">剩餘</span>
+        <span class="counter-num" id="flowerNum">0</span>
+        <span class="counter-lbl">抽到花牌</span>
       </div>
       <div class="counter-cell">
-        <span class="counter-num">144</span>
-        <span class="counter-lbl">總計</span>
+        <span class="mode-badge" id="modeBadge" style="color:var(--gold)">正常</span>
+        <span class="counter-lbl">當前模式</span>
       </div>
     </div>
-    <div class="progress-wrap">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
+  </div>
+
+  <div class="mode-group">
+    <button class="mode-btn active" id="modeNormal"   onclick="setMode('normal')">🀄 正常抽牌</button>
+    <button class="mode-btn"        id="modeNoFlower" onclick="setMode('noflower')">🚫 抽不到花</button>
+    <button class="mode-btn"        id="modeDouble"   onclick="setMode('double')">🌸 花機率×2</button>
   </div>
 
   <div class="button-group">
     <button class="draw-btn" id="drawBtn" onclick="drawTile()">抽　牌</button>
-    <button class="reset-btn" onclick="resetDeck()">🔄 重新洗牌</button>
+    <button class="reset-btn" onclick="resetStats()">🔄 重新洗牌</button>
   </div>
 
   <div class="history-wrap">
@@ -300,115 +317,122 @@
   </div>
 
 <script>
-  const TILES = [];
+  const ALL = [];
 
-  [
-    ['🀢','梅'],['🀣','蘭'],['🀤','菊'],['🀥','竹'],
-    ['🀦','春'],['🀧','夏'],['🀨','秋'],['🀩','冬']
-  ].forEach(([e,n]) => TILES.push({ emoji:e, name:n, type:'花牌' }));
+  [['🀢','梅'],['🀣','蘭'],['🀤','菊'],['🀥','竹'],
+   ['🀦','春'],['🀧','夏'],['🀨','秋'],['🀩','冬']]
+    .forEach(([e,n]) => ALL.push({ emoji:e, name:n, type:'花牌' }));
 
   ['🀇','🀈','🀉','🀊','🀋','🀌','🀍','🀎','🀏']
-    .forEach((e,i) => { for(let k=0;k<4;k++) TILES.push({ emoji:e, name:`${'一二三四五六七八九'[i]}萬`, type:'萬子' }); });
+    .forEach((e,i) => { for(let k=0;k<4;k++) ALL.push({ emoji:e, name:'一二三四五六七八九'[i]+'萬', type:'萬子' }); });
 
   ['🀐','🀑','🀒','🀓','🀔','🀕','🀖','🀗','🀘']
-    .forEach((e,i) => { for(let k=0;k<4;k++) TILES.push({ emoji:e, name:`${'一二三四五六七八九'[i]}索`, type:'索子' }); });
+    .forEach((e,i) => { for(let k=0;k<4;k++) ALL.push({ emoji:e, name:'一二三四五六七八九'[i]+'索', type:'索子' }); });
 
   ['🀙','🀚','🀛','🀜','🀝','🀞','🀟','🀠','🀡']
-    .forEach((e,i) => { for(let k=0;k<4;k++) TILES.push({ emoji:e, name:`${'一二三四五六七八九'[i]}筒`, type:'筒子' }); });
+    .forEach((e,i) => { for(let k=0;k<4;k++) ALL.push({ emoji:e, name:'一二三四五六七八九'[i]+'筒', type:'筒子' }); });
 
   [['🀀','東風'],['🀁','南風'],['🀂','西風'],['🀃','北風'],
    ['🀄','中'],['🀅','發'],['🀆','白板']]
-    .forEach(([e,n]) => { for(let k=0;k<4;k++) TILES.push({ emoji:e, name:n, type:'字牌' }); });
+    .forEach(([e,n]) => { for(let k=0;k<4;k++) ALL.push({ emoji:e, name:n, type:'字牌' }); });
 
-  let deck = [], drawn = [], isAnimating = false;
+  const POOL_NORMAL   = ALL;
+  const POOL_NOFLOWER = ALL.filter(t => t.type !== '花牌');
+  const POOL_DOUBLE   = ALL.concat(ALL.filter(t => t.type === '花牌'));
 
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length-1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i+1));
-      [a[i],a[j]] = [a[j],a[i]];
-    }
-    return a;
+  let mode        = 'normal';
+  let totalDraws  = 0;
+  let flowerDraws = 0;
+  let isAnimating = false;
+
+  const MODES = {
+    normal:   { pool: POOL_NORMAL,   label: '正常' },
+    noflower: { pool: POOL_NOFLOWER, label: '無花' },
+    double:   { pool: POOL_DOUBLE,   label: '花×2' }
+  };
+
+  function setMode(m) {
+    mode = m;
+    document.getElementById('modeNormal').classList.toggle('active',   m === 'normal');
+    document.getElementById('modeNoFlower').classList.toggle('active', m === 'noflower');
+    document.getElementById('modeDouble').classList.toggle('active',   m === 'double');
+    document.getElementById('modeBadge').textContent = MODES[m].label;
   }
 
-  function initDeck() { deck = shuffle(TILES); drawn = []; }
+  function drawTile() {
+    if (isAnimating) return;
+    isAnimating = true;
 
-  function updateCounter() {
-    document.getElementById('drawnNum').textContent  = drawn.length;
-    document.getElementById('remainNum').textContent = deck.length;
-    document.getElementById('progressFill').style.width = (drawn.length / 144 * 100) + '%';
+    const pool = MODES[mode].pool;
+    const tile = pool[Math.floor(Math.random() * pool.length)];
+
+    totalDraws++;
+    if (tile.type === '花牌') flowerDraws++;
+
+    const card = document.getElementById('tileCard');
+    card.classList.remove('animating');
+    void card.offsetWidth;
+    card.classList.add('animating');
+
+    setTimeout(() => setTileDisplay(tile), 220);
+
+    setTimeout(() => {
+      card.classList.remove('animating');
+      isAnimating = false;
+      updateCounter();
+      updateHistory(tile);
+    }, 560);
   }
 
-  function updateHistory() {
-    const scroll = document.getElementById('historyScroll');
-    const empty  = document.getElementById('historyEmpty');
-    if (drawn.length === 0) {
-      empty.style.display = 'block';
-      scroll.querySelectorAll('.history-tile').forEach(el => el.remove());
-      return;
-    }
-    empty.style.display = 'none';
-    const span = document.createElement('span');
-    span.className = 'history-tile';
-    span.textContent = drawn[drawn.length-1].emoji;
-    span.title = drawn[drawn.length-1].name;
-    scroll.insertBefore(span, scroll.firstChild);
-  }
-
-  function setTileDisplay(tile, stateClass) {
+  function setTileDisplay(tile) {
     const face  = document.getElementById('tileFace');
     const emoji = document.getElementById('tileEmoji');
     const label = document.getElementById('tileLabel');
     const badge = document.getElementById('tileBadge');
     const ctl   = document.getElementById('cornerTL');
     const cbr   = document.getElementById('cornerBR');
-    face.className = 'tile-face ' + stateClass + (tile ? ' type-'+tile.type : '');
-    if (tile) {
-      emoji.textContent = tile.emoji; label.textContent = tile.name;
-      badge.textContent = tile.type; ctl.textContent = tile.emoji; cbr.textContent = tile.emoji;
-    } else if (stateClass === 'empty') {
-      emoji.textContent = '🀫'; label.textContent = '牌已全部抽完'; badge.textContent = '';
-    } else {
-      emoji.textContent = '🀫'; label.textContent = '點擊抽牌'; badge.textContent = '';
-    }
+
+    face.className    = 'tile-face type-' + tile.type;
+    emoji.textContent = tile.emoji;
+    label.textContent = tile.name;
+    badge.textContent = tile.type;
+    ctl.textContent   = tile.emoji;
+    cbr.textContent   = tile.emoji;
   }
 
-  function drawTile() {
-    if (deck.length === 0 || isAnimating) return;
-    isAnimating = true;
-    const tile = deck.pop();
-    drawn.push(tile);
-    const card = document.getElementById('tileCard');
-    card.classList.remove('animating');
-    void card.offsetWidth;
-    card.classList.add('animating');
-    setTimeout(() => setTileDisplay(tile, ''), 220);
-    setTimeout(() => {
-      card.classList.remove('animating');
-      isAnimating = false;
-      updateCounter();
-      updateHistory();
-      if (deck.length === 0) {
-        const btn = document.getElementById('drawBtn');
-        btn.disabled = true; btn.textContent = '牌已抽完';
-        setTileDisplay(null, 'empty');
-      }
-    }, 560);
+  function updateCounter() {
+    document.getElementById('totalNum').textContent  = totalDraws;
+    document.getElementById('flowerNum').textContent = flowerDraws;
   }
 
-  function resetDeck() {
+  function updateHistory(tile) {
+    const scroll = document.getElementById('historyScroll');
+    document.getElementById('historyEmpty').style.display = 'none';
+    const span = document.createElement('span');
+    span.className    = 'history-tile';
+    span.textContent  = tile.emoji;
+    span.title        = tile.name;
+    scroll.insertBefore(span, scroll.firstChild);
+  }
+
+  function resetStats() {
     if (isAnimating) return;
-    initDeck();
-    setTileDisplay(null, 'initial');
+    totalDraws  = 0;
+    flowerDraws = 0;
     updateCounter();
+
+    const face = document.getElementById('tileFace');
+    face.className = 'tile-face initial';
+    document.getElementById('tileEmoji').textContent = '🀫';
+    document.getElementById('tileLabel').textContent = '點擊抽牌';
+    document.getElementById('tileBadge').textContent = '';
+    document.getElementById('cornerTL').textContent  = '';
+    document.getElementById('cornerBR').textContent  = '';
+
     const scroll = document.getElementById('historyScroll');
     scroll.querySelectorAll('.history-tile').forEach(el => el.remove());
     document.getElementById('historyEmpty').style.display = 'block';
-    const btn = document.getElementById('drawBtn');
-    btn.disabled = false; btn.textContent = '抽　牌';
   }
-
-  initDeck();
 </script>
 </body>
 </html>
